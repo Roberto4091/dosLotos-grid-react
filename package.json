@@ -1,0 +1,41 @@
+{
+  "name": "doslotos-grid-react",
+  "version": "1.0.0",
+  "description": "Adaptacion de componentes dosLotos grid a react",
+  "main": "dist/index.js",
+  "scripts": {
+    "storybook": "start-storybook -p 9001",
+    "build-storybook": "build-storybook",
+    "build": "babel src -d dist --ignore '**/*.test.js'",
+    "build:watch": "babel src -w -d dist",
+    "test": "jest",
+    "updateTests": "npm run test -- -u"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Roberto4091/doslotos-grid-react.git"
+  },
+  "author": "RobertoTorrico4091@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Roberto4091/doslotos-grid-react/issues"
+  },
+  "homepage": "https://github.com/Roberto4091/doslotos-grid-react#readme",
+  "dependencies": {
+    "classnames": "^2.2.5",
+    "eslint": "^4.19.1",
+    "prop-types": "^15.6.1",
+    "react": "^16.3.1",
+    "react-dom": "^16.3.1"
+  },
+  "devDependencies": {
+    "@storybook/react": "^3.4.1",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-jest": "^22.4.3",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "jest": "^22.4.3",
+    "react-test-renderer": "^16.3.1"
+  }
+}

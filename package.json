@@ -23,6 +23,7 @@
   "homepage": "https://github.com/Roberto4091/doslotos-grid-react#readme",
   "dependencies": {
     "classnames": "^2.2.5",
+    "doslotos-grid": "^1.1.1",
     "eslint": "^4.19.1",
     "prop-types": "^15.6.1",
     "react": "^16.3.1",

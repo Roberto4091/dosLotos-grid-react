@@ -3,57 +3,53 @@ import { node, bool } from 'prop-types';
 import classNames from 'classnames/bind';
 
 const propTypes = {
-  children: node.isRequired,
-  alignVCenter: bool,
-  alignVBottom: bool,
+  reverse: bool,
   alignVTop: bool,
-  alignVBaseline: bool,
-  alignHCenter: bool,
   alignHLeft: bool,
   alignHRight: bool,
-  reverse: bool,
-}
+  alignHCenter: bool,
+  alignVCenter: bool,
+  alignVBottom: bool,
+  alignVBaseline: bool,
+  children: node.isRequired,
+};
 
 const defaultProps = {
-  alignVCenter: false,
-  alignVBottom: false,
+  reverse: false,
   alignVTop: false,
-  alignVBaseline: false,
-  alignHCenter: false,
   alignHLeft: false,
   alignHRight: false,
-  reverse: false,
-}
+  alignVBottom: false,
+  alignVCenter: false,
+  alignHCenter: false,
+  alignVBaseline: false,
+};
 
-const Row = ( props ) => {
-  const {
-    children,
-    alignVCenter,
-    alignVBottom,
-    alignVTop,
-    alignVBaseline,
-    alignHCenter,
-    alignHLeft,
-    alignHRight,
-    reverse,
-  } = props;
-  const classes = classNames(
-    'row',
-    {
-      'row-align-v-center': alignVCenter,
-      'row-align-v-bottom': alignVBottom,
-      'row-align-v-top': alignVTop,
-      'row-align-v-baseline': alignVBaseline,
-      'row-align-h-center': alignHCenter,
-      'row-align-h-left': alignHLeft,
-      'row-align-h-right': alignHRight,
-      'row-reverse': reverse,
-    }
-  );
-  return(
-    <div className={ classes }>{ children }</div>
-  )
-}
+const Row = ({
+  reverse,
+  children,
+  alignVTop,
+  alignHLeft,
+  alignHRight,
+  alignVCenter,
+  alignHCenter,
+  alignVBottom,
+  alignVBaseline,
+}) => {
+  const classes = classNames('row', {
+    'row-reverse': reverse,
+    'row-align-v-top': alignVTop,
+    'row-align-h-left': alignHLeft,
+    'row-align-h-right': alignHRight,
+    'row-align-v-center': alignVCenter,
+    'row-align-v-bottom': alignVBottom,
+    'row-align-h-center': alignHCenter,
+    'row-align-v-baseline': alignVBaseline,
+  });
+
+  return <div className={classes}>{children}</div>;
+};
+
 Row.propTypes = propTypes;
 Row.defaultProps = defaultProps;
 export default Row;

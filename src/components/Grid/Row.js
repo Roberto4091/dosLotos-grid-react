@@ -1,12 +1,14 @@
-import React, { Component } from 'react';
-import { node, bool } from 'prop-types';
+import React from 'react';
+import { node, bool, string, shape } from 'prop-types';
 import classNames from 'classnames/bind';
 
 const propTypes = {
   reverse: bool,
   alignVTop: bool,
   alignHLeft: bool,
+  style: shape({}),
   alignHRight: bool,
+  className: string,
   alignHCenter: bool,
   alignVCenter: bool,
   alignVBottom: bool,
@@ -15,7 +17,9 @@ const propTypes = {
 };
 
 const defaultProps = {
+  style: {},
   reverse: false,
+  className: null,
   alignVTop: false,
   alignHLeft: false,
   alignHRight: false,
@@ -25,18 +29,22 @@ const defaultProps = {
   alignVBaseline: false,
 };
 
-const Row = ({
-  reverse,
-  children,
-  alignVTop,
-  alignHLeft,
-  alignHRight,
-  alignVCenter,
-  alignHCenter,
-  alignVBottom,
-  alignVBaseline,
-}) => {
-  const classes = classNames('row', {
+const Row = (props) => {
+  const {
+    style,
+    reverse,
+    children,
+    alignVTop,
+    className,
+    alignHLeft,
+    alignHRight,
+    alignVCenter,
+    alignHCenter,
+    alignVBottom,
+    alignVBaseline,
+  } = props;
+
+  const rowClasses = {
     'row-reverse': reverse,
     'row-align-v-top': alignVTop,
     'row-align-h-left': alignHLeft,
@@ -45,9 +53,15 @@ const Row = ({
     'row-align-v-bottom': alignVBottom,
     'row-align-h-center': alignHCenter,
     'row-align-v-baseline': alignVBaseline,
-  });
+  };
 
-  return <div className={classes}>{children}</div>;
+  const classes = classNames(
+    'row',
+    rowClasses,
+    className,
+  );
+
+  return <div className={classes} style={style}>{children}</div>;
 };
 
 Row.propTypes = propTypes;

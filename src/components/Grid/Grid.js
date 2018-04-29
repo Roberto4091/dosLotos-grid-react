@@ -1,56 +1,77 @@
 import React from 'react';
-import { node, bool, number, shape } from 'prop-types';
-import classNames from 'classnames/bind';
-// SubComponents
-import Row from './Row';
-import Col from './Col';
+import { node, number, string, oneOfType, shape, bool } from 'prop-types';
+import classNames from 'classnames';
+
+const DEVICE_SIZES = ['md', 'sm', 'xs'];
+
+const stringOrNumberProp = oneOfType([number, string]);
+
+const gridProps = oneOfType([
+  stringOrNumberProp,
+  shape({
+    size: oneOfType([number, string]),
+    horizontal: bool,
+  }),
+]);
 
 const propTypes = {
-  md: number,
-  sm: number,
-  xs: number,
-  grid: number,
-  mdHorizontal: bool,
-  smHorizontal: bool,
-  xsHorizontal: bool,
+  md: gridProps,
+  sm: gridProps,
+  xs: gridProps,
+  style: shape({}),
+  className: string,
+  grid: stringOrNumberProp,
   children: node.isRequired,
 };
 
 const defaultProps = {
-  md: 0,
-  sm: 0,
-  xs: 0,
+  md: {},
+  sm: {},
+  xs: {},
   grid: 0,
-  mdHorizontal: false,
-  smHorizontal: false,
-  xsHorizontal: false,
+  style: {},
+  className: null,
 };
 
-const Grid = ({
-  md,
-  sm,
-  xs,
-  grid,
-  children,
-  mdHorizontal,
-  smHorizontal,
-  xsHorizontal,
-}) => {
-  const classes = classNames('grid-layout', {
-    [`grid-md-${md}`]: md,
-    [`grid-sm-${sm}`]: sm,
-    [`grid-xs-${xs}`]: xs,
-    [`grid-${grid}`]: grid,
-    'grid-md-horizontal': mdHorizontal,
-    'grid-sm-horizontal': smHorizontal,
-    'grid-xs-horizontal': xsHorizontal,
+const Grid = (props) => {
+  const gridClasses = [];
+  const {
+    grid,
+    style,
+    children,
+    className,
+  } = props;
+
+  // Added primary class grid 
+  (grid) ? gridClasses.push(`grid-${grid}`) : null;
+
+  // Added seconds prop for each device sizes
+  DEVICE_SIZES.forEach((gridWidth, i) => {
+    let gridProp = props[gridWidth];
+    // Prevent empty var or value size prop
+    if (!gridProp) return;
+
+    if ((typeof gridProp === "object")) {
+      const gridClass = `grid-${gridWidth}-${gridProp.size}`;
+
+      gridClasses.push(classNames({
+        [gridClass]: gridProp.size,
+        [`grid-${gridWidth}-horizontal`]: gridProp.horizontal,
+      }));
+    } else {
+      gridClasses.push(`grid-${gridWidth}-${gridProp}`);
+    }
   });
+
+  // Build the class names
+  const classes = classNames(
+    className,
+    gridClasses,
+  );
   
-  return <div className={classes}>{children}</div>;
+  return <div className={classes} style={style}>{children}</div>;
 };
 
-Grid.Row = Row;
-Grid.Col = Col;
 Grid.propTypes = propTypes;
 Grid.defaultProps = defaultProps;
 export default Grid;

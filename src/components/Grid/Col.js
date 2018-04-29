@@ -1,62 +1,74 @@
-import React, { Component } from 'react';
-import { number, shape, node } from 'prop-types';
-import classNames from 'classnames/bind';
+import React from 'react';
+import { node, number, string, oneOfType, shape } from 'prop-types';
+import classNames from 'classnames';
 
-const DEVICE_SIZES = ['xss', 'xs', 'sm', 'md', 'lg']
+const DEVICE_SIZES = ['xxs', 'xs', 'sm', 'md', 'lg'];
 
-const parser = (prefix, props) => {
-  let classNames = [];
-  DEVICE_SIZES.forEach(size => {
-    for(let prop in props) {
-      if (size === prop && typeof prop === 'object') {
-        
-      }
-    }
-  });
-};
+const stringOrNumberProp = oneOfType([number, string]);
+
+const columnProps = oneOfType([
+  number,
+  string,
+  shape({
+    size: oneOfType([number, string]),
+    order: stringOrNumberProp,
+    offset: stringOrNumberProp,
+  }),
+]);
 
 const propTypes = {
-  xxs: shape({
-    cols: number,
-    order: number,
-    offset: number,
-  }),
-  xs: shape({
-    cols: number,
-    order: number,
-    offset: number,
-  }),
-  sm: shape({
-    cols: number,
-    order: number,
-    offset: number,
-  }),
-  md: shape({
-    cols: number,
-    order: number,
-    offset: number,
-  }),
-  lg: shape({
-    cols: number,
-    order: number,
-    offset: number,
-  }),
+  xs: columnProps,
+  sm: columnProps,
+  md: columnProps,
+  lg: columnProps,
+  xl: columnProps,
+  style: shape({}),
+  className: string,
   children: node.isRequired,
 };
 
 const defaultProps = {
-  xxs: {},
   xs: {},
   sm: {},
   md: {},
   lg: {},
+  xl: {},
+  style: {},
+  className: null,
 };
 
 const Col = (props) => {
+  const colClasses = [];
+  const {
+    style,
+    children,
+    className,
+  } = props;
+
+  DEVICE_SIZES.forEach((colWidth, i) => {
+    let columnProp = props[colWidth];
+    // Prevent empty var or value size prop
+    if (!columnProp) return;
+    
+    if ((typeof columnProp === "object")) {
+      const colClass = `col-${colWidth}-${columnProp.size}`;
+      
+      colClasses.push(classNames({
+        [colClass]: columnProp.size,
+        [`col-${colWidth}-ord-${columnProp.order}`]: columnProp.order,
+        [`col-${colWidth}-offset-${columnProp.offset}`]: columnProp.offset,
+      }));
+    } else {
+      colClasses.push(`col-${colWidth}-${columnProp}`);
+    }
+  });
+
+  const classes = classNames(
+    className,
+    colClasses,
+  );
   
-  console.log(props);
-  
-  return <div >{props.children}</div>;
+  return <div className={classes} style={style}>{children}</div>;
 };
 
 Col.propTypes = propTypes;
